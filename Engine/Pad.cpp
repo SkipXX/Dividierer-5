@@ -6,9 +6,10 @@ Pad::Pad(float x, float y)
 {
 }
 
-Pad::Pad(Vec2 vec)
+Pad::Pad(Vec2 vec, float width)
 	:
-	Rect(vec,100.0f,25.0f)
+	Rect(vec,width,25.0f),
+	m_width(width)
 {
 }
 

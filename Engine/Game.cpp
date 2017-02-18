@@ -30,7 +30,7 @@ Game::Game(MainWindow& wnd)
 {
 	timer.Mark();
 
-	m_bricks.push_back(MyBrick(Vec2(160.0f,100.0f), 100,30,Colors::Green));
+	m_bricks.push_back(MyBrick(Vec2(160.0f,100.0f), 100,100,Colors::Green));
 }
 
 void Game::Go()
@@ -102,8 +102,19 @@ void Game::UpdateModel()
 	//Pad rebound
 	if (ball.isOverlappingWith(pad))
 	{
-		if (ball.isSideRebound(pad)) ball.ReboundX();
-		else ball.ReboundY();
+		if (ball.isSideRebound(pad))
+		{
+			ball.ReboundX();
+			ball.ReboundY();
+		}
+		else
+		{
+			ball.ReboundY();
+			float sideReboundFactor = 400.0f;
+			float speed = ball.m_v.GetLength();
+			ball.m_v += Vec2(((ball.m_left + 7.0f) - (pad.m_left + pad.m_width / 2.0f)) / (pad.m_width / 2.0f) * sideReboundFactor, 0.0f);
+			ball.m_v = ball.m_v.GetNormalized() * speed;
+		}
 	}
 }
 
