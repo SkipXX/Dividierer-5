@@ -50,3 +50,11 @@ bool Rect::isOverlappingWith(const Rect& other) const
 	return m_right > other.m_left && m_left < other.m_right
 		&& m_bottom > other.m_top && m_top < other.m_bottom;
 }
+
+void Rect::move(const Vec2& dv)
+{
+	m_left += dv.x;
+	m_right += dv.x;
+	m_top += dv.y;
+	m_bottom += dv.y;
+}

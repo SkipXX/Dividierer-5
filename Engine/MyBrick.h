@@ -1,7 +1,9 @@
 #pragma once
+
 #include "Rect.h"
 #include "Vec2.h"
 #include "Colors.h"
+#include "Graphics.h"
 
 class MyBrick : public Rect
 {
@@ -17,5 +19,7 @@ public:
 	MyBrick();
 	MyBrick(Vec2 left_top, float width, float height, Color color);
 	~MyBrick();
+
+	void Draw(Graphics& gfx);
 };
 

@@ -22,8 +22,14 @@
 #include "Game.h"
 #include "ChiliException.h"
 
+#include <ctime>
+#include <utility>
+
 int WINAPI wWinMain( HINSTANCE hInst,HINSTANCE,LPWSTR pArgs,INT )
 {
+	srand(static_cast<unsigned int>(time(nullptr)));
+	rand();
+
 	try
 	{
 		MainWindow wnd( hInst,pArgs );		

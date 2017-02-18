@@ -1,5 +1,4 @@
 #include "MyBrick.h"
-#include "MyBrick.h"
 
 
 
@@ -17,4 +16,9 @@ MyBrick::MyBrick(Vec2 left_top, float width, float height, Color color)
 
 MyBrick::~MyBrick()
 {
+}
+
+void MyBrick::Draw(Graphics & gfx)
+{
+	gfx.DrawRect(m_left,m_top,m_right,m_bottom, m_color);
 }

@@ -5,7 +5,7 @@
 
 class Ball : public Rect
 {
-private:
+public:
 	Vec2 m_pos;
 	Vec2 m_v;
 
@@ -15,4 +15,9 @@ public:
 
 	void Draw(Graphics& gfx);
 	void Update(float dt);
+	void ReboundX();
+	void ReboundY();
+	void doContainRebound(const Rect& walls);
+
+	void move(Vec2 dv);
 };

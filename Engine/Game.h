@@ -25,6 +25,9 @@
 #include "Graphics.h"
 
 #include "Ball.h"
+#include "FrameTimer.h"
+#include "MyBrick.h"
+#include <vector>
 
 class Game
 {
@@ -46,5 +49,10 @@ private:
 	/*  User Variables              */
 
 	Ball ball;
+	Rect walls = Rect(0.0f, float(gfx.ScreenWidth - 1), 0.0f, float(gfx.ScreenHeight - 1));
+
+	std::vector<MyBrick> m_bricks;
+
+	FrameTimer timer;
 	/********************************/
 };

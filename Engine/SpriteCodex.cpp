@@ -2,8 +2,8 @@
 
 void SpriteCodex::DrawBall( const Vec2& topLeft,Graphics& gfx )
 {
-	const int x = int( topLeft.x ) - 7;
-	const int y = int( topLeft.y ) - 7;
+	const int x = int(topLeft.x); // -7;
+	const int y = int(topLeft.y); // -7;
 
 	gfx.PutPixel(5 + x, 0 + y, 48, 48, 48);
 	gfx.PutPixel(6 + x, 0 + y, 48, 48, 48);
