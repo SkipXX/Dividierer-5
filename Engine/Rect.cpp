@@ -43,3 +43,10 @@ Rect Rect::fromMiddle(Vec2 middle, float halfWidth, float halfHeight)
 {
 	return Rect(middle.x - halfWidth, middle.x + halfWidth, middle.y - halfHeight, middle.y + halfHeight);
 }
+
+bool Rect::isOverlappingWith(const Rect& other) const
+{
+	//if(((m_left < rekt.m_right && rekt.m_left < m_right) || (m_right < rekt.m_left && rekt.m_right > m_left)) && ((m_bottom < rekt.m_left && m_right > rekt.m_left) || (m_right > rekt.m_right && m_left < rekt.m_right)))
+	return m_right > other.m_left && m_left < other.m_right
+		&& m_bottom > other.m_top && m_top < other.m_bottom;
+}

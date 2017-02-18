@@ -4,7 +4,7 @@
 
 class Rect
 {
-private:
+protected:
 	float m_left, m_right, m_top, m_bottom;
 
 public:
@@ -15,5 +15,7 @@ public:
 	~Rect();
 
 	static Rect fromMiddle(Vec2 middle, float halfWidth, float halfHeight);
+
+	bool isOverlappingWith(const Rect& rekt) const;
 };
 
