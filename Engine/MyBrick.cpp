@@ -20,5 +20,5 @@ MyBrick::~MyBrick()
 
 void MyBrick::Draw(Graphics & gfx)
 {
-	gfx.DrawRect(m_left,m_top,m_right,m_bottom, m_color);
+	gfx.DrawRect(int(m_left), int(m_top), int(m_right), int(m_bottom), m_color);
 }

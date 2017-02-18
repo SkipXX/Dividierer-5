@@ -52,6 +52,57 @@ void Ball::doContainRebound(const Rect & walls)
 		ReboundY();
 	}
 }
+float Ball::doContainReboundPhysical(const Rect & walls, float dt)
+{	
+	constexpr float precision = 1000.0f;
+	bool fixed = false;
+	float correction_output = 1.0f;
+
+	do
+	{
+
+		if (m_left < walls.m_left || m_right > walls.m_right)
+		{
+			move(m_v * -dt);
+
+			int ii = 0;
+			while (!(m_left < walls.m_left || m_right > walls.m_right))
+			{
+				move(m_v * (dt / precision));
+				ii++;
+			}
+
+			ReboundX();
+
+			move(m_v * (dt * (precision - float(ii)) / precision));
+
+			correction_output = float(ii) / precision;
+			continue;
+		}
+		else if (m_top < walls.m_top || m_bottom > walls.m_bottom)
+		{
+			move(m_v * -dt);
+
+			int ii = 0;
+			while (!(m_top < walls.m_top || m_bottom > walls.m_bottom))
+			{
+				move(m_v * (dt / precision));
+				ii++;
+			}
+
+			ReboundY();
+
+			move(m_v * (dt * (precision - float(ii)) / precision));
+
+			correction_output = float(ii) / precision;
+			continue;
+		}
+		else fixed = true;
+
+	} while (!fixed);
+
+	return correction_output;
+}
 
 void Ball::move(Vec2 dv)
 {

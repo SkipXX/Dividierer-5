@@ -25,7 +25,7 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	ball(Vec2(400.0f, 100.0f), Vec2(500.0f, 500.0f))
+	ball(Vec2(400.0f, 300.0f), Vec2(400.0f, 400.0f))
 {
 	timer.Mark();
 
@@ -57,7 +57,7 @@ void Game::UpdateModel()
 	//	if (ball.m_v.GetLength() > 4000) ball.m_v *= 0.9f;
 	//}
 
-	ball.doContainRebound(walls);
+	ball.doContainReboundPhysical(walls, dt);
 
 	bool respawn = false;
 	for (auto& ii : m_bricks)
@@ -72,7 +72,7 @@ void Game::UpdateModel()
 	}
 	if (respawn)
 	{
-		m_bricks.push_back(MyBrick(Vec2(rand() % 700, rand() % 570), 100, 30, Colors::Green));
+		m_bricks.push_back(MyBrick(Vec2(float(rand() % 700), float(rand() % 570)), 100.0f, 30.0f, Colors::Green));
 	}
 
 }
