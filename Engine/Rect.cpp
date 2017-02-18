@@ -58,3 +58,28 @@ void Rect::move(const Vec2& dv)
 	m_top += dv.y;
 	m_bottom += dv.y;
 }
+void Rect::move(float dx, float dy)
+{
+	move(Vec2(dx, dy));
+}
+
+void Rect::moveTo(const Vec2 & left_top)
+{
+	float width = m_right - m_left;
+	float height = m_bottom - m_top;
+	m_left = left_top.x;
+	m_top = left_top.y;
+
+	m_right = m_left + width;
+	m_bottom = m_top + height;
+}
+
+void Rect::Draw(Graphics & gfx) const
+{
+	gfx.DrawRect(int(m_left),int(m_top),int(m_right),int(m_bottom), Colors::Cyan);
+}
+
+void Rect::Draw(Graphics & gfx, Color c) const
+{
+	gfx.DrawRect(int(m_left), int(m_top), int(m_right), int(m_bottom), c);
+}

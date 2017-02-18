@@ -28,6 +28,7 @@
 #include "FrameTimer.h"
 #include "MyBrick.h"
 #include <vector>
+#include "Pad.h"
 
 class Game
 {
@@ -50,6 +51,7 @@ private:
 
 	Ball ball;
 	Rect walls = Rect(0.0f, float(gfx.ScreenWidth - 1), 0.0f, float(gfx.ScreenHeight - 1));
+	Pad pad;
 
 	std::vector<MyBrick> m_bricks;
 

@@ -25,7 +25,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	ball(Vec2(400.0f, 300.0f), Vec2(400.0f, 400.0f))
+	ball(Vec2(400.0f, 300.0f), Vec2(400.0f, 400.0f)),
+	pad(Vec2(gfx.ScreenWidth / 2, gfx.ScreenHeight - 50))
 {
 	timer.Mark();
 
@@ -60,6 +61,7 @@ void Game::UpdateModel()
 	ball.doContainReboundPhysical(walls, dt);
 
 	bool respawn = false;
+	//Hiting a Brick
 	for (auto& ii : m_bricks)
 	{	
 		if (ball.isOverlappingWith(ii) && !ii.isDead)
@@ -75,6 +77,30 @@ void Game::UpdateModel()
 		m_bricks.push_back(MyBrick(Vec2(float(rand() % 700), float(rand() % 570)), 100.0f, 30.0f, Colors::Green));
 	}
 
+	//Pad Movement
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		pad.move(Vec2(-700.0f * dt, 0.0f));
+		if (pad.m_left < walls.m_left)
+		{
+			pad.moveTo(Vec2(walls.m_left,pad.m_top));
+		}
+
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		pad.move(700.0f * dt,0.0f);
+		if (pad.m_right > walls.m_right)
+		{
+			pad.moveTo(Vec2(walls.m_right - (pad.m_right - pad.m_left), pad.m_top));
+		}
+	}
+
+	//Pad rebound
+	if (ball.isOverlappingWith(pad))
+	{
+		ball.ReboundY();
+	}
 }
 
 void Game::ComposeFrame()
@@ -85,4 +111,6 @@ void Game::ComposeFrame()
 	{
 		if(!ii.isDead) ii.Draw(gfx);
 	}
+
+	pad.Draw(gfx, Colors::Magenta);
 }

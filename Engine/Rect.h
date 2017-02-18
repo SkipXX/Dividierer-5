@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec2.h"
+#include "Graphics.h"
 
 class Rect
 {
@@ -19,5 +20,9 @@ public:
 	bool isOverlappingWith(const Rect& rekt) const;
 
 	virtual void move(const Vec2& dv);
+	void move(float dx, float dy);
+	virtual void moveTo(const Vec2& left_top);
+	virtual void Draw(Graphics& gfx) const;
+	virtual void Draw(Graphics& gfx, Color c) const;
 };
 
