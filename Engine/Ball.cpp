@@ -110,3 +110,46 @@ void Ball::move(Vec2 dv)
 	m_pos.x = m_left;
 	m_pos.y = m_top;
 }
+
+bool Ball::isSideRebound(const Rect& rekt) const
+{
+	if (m_top > rekt.m_top && m_bottom < rekt.m_bottom) return true;
+
+	Ball temp_b(*this);
+	Vec2 temp_dv(m_v.GetNormalized() * -0.1f);
+
+	while (temp_b.isOverlappingWith(rekt))
+	{
+		temp_b.move(temp_dv);
+	}
+	if (temp_b.m_bottom > rekt.m_top && temp_b.m_top < rekt.m_bottom)
+	{
+		return true;
+	}
+	else return false;
+
+	//old code
+	//if (m_top < rekt.m_bottom && m_bottom > rekt.m_bottom)
+	//{
+	//	if (m_right > rekt.m_left && m_left < rekt.m_left)
+	//	{
+	//		return (rekt.m_bottom - m_top) > (m_right - rekt.m_left);
+	//	}
+	//	else
+	//	{
+	//		return (rekt.m_bottom - m_top) > (rekt.m_right - m_left);
+	//	}
+	//}
+	//else if(m_top < rekt.m_top && m_bottom > rekt.m_top)
+	//{
+	//	if (m_right > rekt.m_left && m_left < rekt.m_left)
+	//	{
+	//		return (m_bottom - rekt.m_top) > (m_right - rekt.m_left);
+	//	}
+	//	else
+	//	{
+	//		return (m_bottom - rekt.m_top) > (rekt.m_right - m_left);
+	//	}
+	//}
+	//else return false;
+}

@@ -23,4 +23,5 @@ public:
 	float doContainReboundPhysical(const Rect & walls, float dt);
 
 	void move(Vec2 dv);
+	bool isSideRebound(const Rect & rekt) const;
 };

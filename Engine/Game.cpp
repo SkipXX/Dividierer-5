@@ -58,15 +58,18 @@ void Game::UpdateModel()
 	//	if (ball.m_v.GetLength() > 4000) ball.m_v *= 0.9f;
 	//}
 
-	ball.doContainReboundPhysical(walls, dt);
+	//ball.doContainReboundPhysical(walls, dt);
+	ball.doContainRebound(walls);
 
 	bool respawn = false;
 	//Hiting a Brick
 	for (auto& ii : m_bricks)
 	{	
 		if (ball.isOverlappingWith(ii) && !ii.isDead)
-		{
-			ball.ReboundY();
+		{	
+			if (ball.isSideRebound(ii)) ball.ReboundX();
+			else ball.ReboundY();
+
 			ii.isDead = true;
 
 			respawn = true;
@@ -74,7 +77,7 @@ void Game::UpdateModel()
 	}
 	if (respawn)
 	{
-		m_bricks.push_back(MyBrick(Vec2(float(rand() % 700), float(rand() % 570)), 100.0f, 30.0f, Colors::Green));
+		m_bricks.push_back(MyBrick(Vec2(float(rand() % 700), float(rand() % 500)), 100.0f, 100.0f, Colors::Green));
 	}
 
 	//Pad Movement
@@ -99,7 +102,8 @@ void Game::UpdateModel()
 	//Pad rebound
 	if (ball.isOverlappingWith(pad))
 	{
-		ball.ReboundY();
+		if (ball.isSideRebound(pad)) ball.ReboundX();
+		else ball.ReboundY();
 	}
 }
 
