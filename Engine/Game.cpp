@@ -21,6 +21,8 @@
 #include "MainWindow.h"
 #include "Game.h"
 
+#include <iostream>
+
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
@@ -30,7 +32,9 @@ Game::Game(MainWindow& wnd)
 {
 	timer.Mark();
 
-	m_bricks.push_back(MyBrick(Vec2(160.0f,100.0f), 100,100,Colors::Green));
+	resetBall();
+	setupBricks1();
+	//m_bricks.push_back(MyBrick(Vec2(160.0f,100.0f), 100,100,Colors::Green));
 }
 
 void Game::Go()
@@ -58,8 +62,13 @@ void Game::UpdateModel()
 	//	if (ball.m_v.GetLength() > 4000) ball.m_v *= 0.9f;
 	//}
 
-
-	bool respawn = false;
+	//Brick respawning for testing
+	//bool respawn = false;
+	//if (respawn)
+	//{
+	//	m_bricks.push_back(MyBrick(Vec2(float(rand() % 700), float(rand() % 500)), 100.0f, 100.0f, Colors::Green));
+	//}
+	
 	//Hiting a Brick
 	for (auto& ii : m_bricks)
 	{	
@@ -70,13 +79,10 @@ void Game::UpdateModel()
 
 			ii.isDead = true;
 
-			respawn = true;
+			//respawn = true;
 		}
 	}
-	if (respawn)
-	{
-		m_bricks.push_back(MyBrick(Vec2(float(rand() % 700), float(rand() % 500)), 100.0f, 100.0f, Colors::Green));
-	}
+	
 
 	//Pad Movement
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
@@ -97,6 +103,25 @@ void Game::UpdateModel()
 		}
 	}
 
+	//automatic Pad movement
+	if (ball.m_left + 7 < pad.m_left + pad.m_width /2)
+	{
+		pad.move(Vec2(-370.0f * dt, 0.0f));
+		if (pad.m_left < walls.m_left)
+		{
+			pad.moveTo(Vec2(walls.m_left, pad.m_top));
+		}
+	
+	}
+	if (ball.m_left + 7 > pad.m_left + pad.m_width / 2)
+	{
+		pad.move(370.0f * dt, 0.0f);
+		if (pad.m_right > walls.m_right)
+		{
+			pad.moveTo(Vec2(walls.m_right - (pad.m_right - pad.m_left), pad.m_top));
+		}
+	}
+
 	//Pad rebound
 	if (ball.isOverlappingWith(pad))
 	{
@@ -106,11 +131,11 @@ void Game::UpdateModel()
 			ball.ReboundY();
 			if (ball.m_left < pad.m_left + pad.m_width / 2)
 			{
-				ball.move(Vec2(pad.m_left - ball.m_right, 0.0f));
+				ball.move(Vec2(pad.m_left - ball.m_right, -1.0f));
 			}
 			else
 			{
-				ball.move(Vec2(pad.m_right - ball.m_left, 0.0f));
+				ball.move(Vec2(pad.m_right - ball.m_left, -1.0f));
 			}
 		}
 		else
@@ -123,9 +148,32 @@ void Game::UpdateModel()
 		}
 	}
 
+	//test for Ball == RIP
+	if (ball.m_bottom > walls.m_bottom)
+	{
+		resetBall();
+		setupBricks1();
+	}
 
 	//ball.doContainReboundPhysical(walls, dt);
 	ball.doContainRebound(walls);
+
+	//win check
+	{
+		bool isWon = true;
+		for (auto& ii : m_bricks)
+		{
+			if (ii.isDead) continue;
+			else isWon = false;
+		}
+
+		if (isWon)
+		{
+			resetBall();
+			setupBricks1();
+		}
+	}
+
 }
 
 void Game::ComposeFrame()
@@ -138,4 +186,54 @@ void Game::ComposeFrame()
 	}
 
 	pad.Draw(gfx, Colors::Magenta);
+}
+
+
+void Game::setupBricks1()
+{
+	constexpr float space = 6.0f;
+	const int numberOfBricks = 12;
+	const float brickWidth = (gfx.ScreenWidth - space * numberOfBricks) / 12.0f;
+	const float brickHeight = 30.0f;
+	Color color = Colors::Red;
+
+	m_bricks.clear();
+
+	for (int ii = 0; ii < 12; ++ii)
+	{
+
+		for (int jj = 0;jj < 5;++jj)
+		{
+			switch (jj)
+			{
+				case 0:
+					color = Colors::Cyan;
+					break;
+				case 1:
+					color = Colors::Blue;
+					break;
+				case 2:
+					color = Colors::Gray;
+					break;
+				case 3:
+					color = Colors::Green;
+					break;
+				case 4:
+					color = Colors::LightGray;
+					break;
+
+				default:
+					std::cerr << "Unhandled for Color [setupBricks1()] aka jj > 4";
+					break;
+			}
+
+			m_bricks.push_back(MyBrick(Vec2((brickWidth + space) * ii + space/2, (brickHeight + space) * jj), brickWidth, brickHeight, color));
+		}
+	}
+}
+
+void Game::resetBall()
+{
+	const float speed = 500.0f;
+	ball = Ball(Vec2(400.0f, 300.0f), Vec2(rand() % 201 - 200.0f,  50.0f + rand() % 51).Normalize() * speed);
 }

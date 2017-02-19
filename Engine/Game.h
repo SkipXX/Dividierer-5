@@ -42,6 +42,8 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void setupBricks1();
+	void resetBall();
 	/********************************/
 private:
 	MainWindow& wnd;

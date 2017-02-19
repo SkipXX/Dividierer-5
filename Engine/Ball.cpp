@@ -28,6 +28,7 @@ void Ball::ReboundY()
 	m_v.y = -m_v.y;
 }
 
+//return side of wall as int, 1 = bottom
 void Ball::doContainRebound(const Rect & walls)
 {
 	if (m_left < walls.m_left)
@@ -51,6 +52,7 @@ void Ball::doContainRebound(const Rect & walls)
 		move(Vec2(0.0f, walls.m_bottom - m_bottom));
 		ReboundY();
 	}
+
 }
 float Ball::doContainReboundPhysical(const Rect & walls, float dt)
 {	
