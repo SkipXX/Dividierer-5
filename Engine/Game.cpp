@@ -25,7 +25,7 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	ball(Vec2(400.0f, 300.0f), Vec2(400.0f, 400.0f)),
+	ball(Vec2(400.0f, 300.0f), Vec2(300.0f + rand() % 201, 400.0f + rand() % 201)),
 	pad(Vec2(gfx.ScreenWidth / 2, gfx.ScreenHeight - 50))
 {
 	timer.Mark();
@@ -58,8 +58,6 @@ void Game::UpdateModel()
 	//	if (ball.m_v.GetLength() > 4000) ball.m_v *= 0.9f;
 	//}
 
-	//ball.doContainReboundPhysical(walls, dt);
-	ball.doContainRebound(walls);
 
 	bool respawn = false;
 	//Hiting a Brick
@@ -103,9 +101,17 @@ void Game::UpdateModel()
 	if (ball.isOverlappingWith(pad))
 	{
 		if (ball.isSideRebound(pad))
-		{
+		{	
 			ball.ReboundX();
 			ball.ReboundY();
+			if (ball.m_left < pad.m_left + pad.m_width / 2)
+			{
+				ball.move(Vec2(pad.m_left - ball.m_right, 0.0f));
+			}
+			else
+			{
+				ball.move(Vec2(pad.m_right - ball.m_left, 0.0f));
+			}
 		}
 		else
 		{
@@ -116,6 +122,10 @@ void Game::UpdateModel()
 			ball.m_v = ball.m_v.GetNormalized() * speed;
 		}
 	}
+
+
+	//ball.doContainReboundPhysical(walls, dt);
+	ball.doContainRebound(walls);
 }
 
 void Game::ComposeFrame()
