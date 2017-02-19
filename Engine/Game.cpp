@@ -104,21 +104,24 @@ void Game::UpdateModel()
 	}
 
 	//automatic Pad movement
-	if (ball.m_left + 7 < pad.m_left + pad.m_width /2)
+	if (!wnd.kbd.KeyIsPressed(VK_LEFT) && !wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
-		pad.move(Vec2(-370.0f * dt, 0.0f));
-		if (pad.m_left < walls.m_left)
+		if (ball.m_left + 7 < pad.m_left + pad.m_width / 2)
 		{
-			pad.moveTo(Vec2(walls.m_left, pad.m_top));
+			pad.move(Vec2(-370.0f * dt, 0.0f));
+			if (pad.m_left < walls.m_left)
+			{
+				pad.moveTo(Vec2(walls.m_left, pad.m_top));
+			}
+
 		}
-	
-	}
-	if (ball.m_left + 7 > pad.m_left + pad.m_width / 2)
-	{
-		pad.move(370.0f * dt, 0.0f);
-		if (pad.m_right > walls.m_right)
+		if (ball.m_left + 7 > pad.m_left + pad.m_width / 2)
 		{
-			pad.moveTo(Vec2(walls.m_right - (pad.m_right - pad.m_left), pad.m_top));
+			pad.move(370.0f * dt, 0.0f);
+			if (pad.m_right > walls.m_right)
+			{
+				pad.moveTo(Vec2(walls.m_right - (pad.m_right - pad.m_left), pad.m_top));
+			}
 		}
 	}
 
