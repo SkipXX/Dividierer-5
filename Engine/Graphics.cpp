@@ -357,6 +357,36 @@ void Graphics::DrawCircle( int x,int y,int radius,Color c )
 }
 
 
+///
+void Graphics::DrawLine(Vec2 p_1, Vec2 p_2, Color color)
+{
+	std::vector<Vec2> line_points;
+	const Vec2 line_direction = (p_2 - p_1).Normalize();
+	float lenght = (p_2 - p_1).GetLength();
+
+	line_points.push_back(p_1);
+
+	for (int ii = 0; ii < static_cast<int>(lenght); ii++)
+	{
+		p_1 += line_direction;
+		line_points.push_back(p_1);
+	}
+
+	line_points.push_back(p_2);
+
+	for (auto& ii : line_points)
+	{
+		PutPixel(int(ii.x), int(ii.y), color);
+	}
+}
+void Graphics::DrawLine(float x_1, float y_1, float x_2, float y_2, Color color)
+{
+	DrawLine(Vec2(x_1,y_1),Vec2(x_2,y_2),color);
+}
+///
+
+
+
 //////////////////////////////////////////////////
 //           Graphics Exception
 Graphics::Exception::Exception( HRESULT hr,const std::wstring& note,const wchar_t* file,unsigned int line )

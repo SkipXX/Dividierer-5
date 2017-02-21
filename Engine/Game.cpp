@@ -23,6 +23,8 @@
 
 #include <iostream>
 
+#include "drawLine.h"
+
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
@@ -214,6 +216,10 @@ void Game::ComposeFrame()
 	}
 
 	pad.Draw(gfx, Colors::Magenta);
+
+
+	gfx.DrawLine(Vec2(pad.m_left + pad.m_width / 2, pad.m_top), Vec2(ball.m_left + 7, ball.m_top + 7));
+
 }
 
 
