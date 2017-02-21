@@ -50,6 +50,31 @@ void Game::UpdateModel()
 	float dt = timer.Mark();
 	ball.Update(dt);
 
+	//Options
+	//a is automatic movement
+	if (wnd.kbd.KeyIsPressed(0x41))
+	{
+		if(optionsBuffer == '0') optionsBuffer = 'a';
+	}
+	if (optionsBuffer != '0')
+	{
+		switch (optionsBuffer)
+		{
+		case 'a':
+			if (!wnd.kbd.KeyIsPressed(0x41))
+			{
+				automaticMovement = !automaticMovement;
+				optionsBuffer = '0';
+			}
+				break;
+
+		default:
+			throw("Unhandled case in optionsbuffer [UpdateModel()]"); //?! is this bad practice
+			optionsBuffer = '0';
+			break;
+		}
+
+	}
 
 	//random ball movement
 	//{
@@ -104,7 +129,7 @@ void Game::UpdateModel()
 	}
 
 	//automatic Pad movement
-	if (!wnd.kbd.KeyIsPressed(VK_LEFT) && !wnd.kbd.KeyIsPressed(VK_RIGHT))
+	if (automaticMovement && !wnd.kbd.KeyIsPressed(VK_LEFT) && !wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
 		if (ball.m_left + 7 < pad.m_left + pad.m_width / 2)
 		{

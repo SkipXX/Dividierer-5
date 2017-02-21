@@ -50,6 +50,8 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	bool automaticMovement = false;
+	char optionsBuffer = '0';
 
 	Ball ball;
 	Rect walls = Rect(0.0f, float(gfx.ScreenWidth - 1), 0.0f, float(gfx.ScreenHeight - 1));
