@@ -24,6 +24,8 @@
 #include "Mouse.h"
 #include "Graphics.h"
 
+#include "Sound.h"
+
 #include "Ball.h"
 #include "FrameTimer.h"
 #include "MyBrick.h"
@@ -66,5 +68,7 @@ private:
 	std::vector<MyBrick> m_bricks;
 
 	FrameTimer timer;
+
+	Sound Music;
 	/********************************/
 };

@@ -31,9 +31,12 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ball(Vec2(400.0f, 300.0f), Vec2(-300.0f, -300.0f)),
-	pad(Vec2(gfx.ScreenWidth / 2, gfx.ScreenHeight - 50))
+	pad(Vec2(gfx.ScreenWidth / 2, gfx.ScreenHeight - 50)),
+	Music(L"DesDividierersGebeerde2.wav",0.0f,21.338f)
 {
 	timer.Mark();
+
+	Music.Play(1.0f,0.5f);
 
 	resetBall();
 
@@ -276,7 +279,7 @@ void Game::ComposeFrame()
 	pad.Draw(gfx, Colors::Magenta);
 
 	//?
-	gfx.DrawLine(Vec2(pad.m_left + pad.m_width / 2, pad.m_top), Vec2(ball.m_left + 7, ball.m_top + 7));
+	//gfx.DrawLine(Vec2(pad.m_left + pad.m_width / 2, pad.m_top), Vec2(ball.m_left + 7, ball.m_top + 7));
 
 	//Lives
 	for (int ii = 0; ii < Lives; ii++)
