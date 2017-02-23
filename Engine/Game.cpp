@@ -320,8 +320,8 @@ void Game::setupBricks1()
 
 void Game::resetBall()
 {
-	const float speed = 500.0f;
-	ball = Ball(Vec2(400.0f, 300.0f), Vec2(rand() % 201 - 200.0f,  50.0f + rand() % 51).Normalize() * speed);
+	const float speed = 300.0f;
+	ball = Ball(Vec2(400.0f, 200.0f), Vec2(rand() % 201 - 100.0f,  speed));
 
 	//test code
 	//ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-300.0f, -300.0f));
