@@ -39,7 +39,7 @@ public:
 	void Go();
 private:
 	void ComposeFrame();
-	void UpdateModel();
+	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
 	void setupBricks1();
@@ -52,6 +52,7 @@ private:
 	/*  User Variables              */
 	bool automaticMovement = false;
 	char optionsBuffer = '0';
+	int Iterations = 10;
 
 	Ball ball;
 	Rect walls = Rect(0.0f, float(gfx.ScreenWidth - 1), 0.0f, float(gfx.ScreenHeight - 1));

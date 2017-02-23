@@ -43,14 +43,19 @@ Game::Game(MainWindow& wnd)
 void Game::Go()
 {
 	gfx.BeginFrame();	
-	UpdateModel();
+	float dt = timer.Mark() / float(Iterations);
+	for (int ii = 0; ii < Iterations; ++ii)
+	{
+		UpdateModel(dt);
+	}
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
+void Game::UpdateModel(float dt)
 {
-	float dt = timer.Mark();
+	//generic pos Update
+	ball.Update(dt);
 
 	//Options
 	//a is automatic movement
@@ -177,17 +182,11 @@ void Game::UpdateModel()
 			float sideReboundFactor = 400.0f;
 			float speed = ball.m_v.GetLength();
 			ball.m_v += Vec2(((ball.m_left + 7.0f) - (pad.m_left + pad.m_width / 2.0f)) / (pad.m_width / 2.0f) * sideReboundFactor, 0.0f);
-			ball.m_v = ball.m_v.GetNormalized() * speed;
 		}
 
 		ball.PadCooldown = true;
 	}
 
-	//generic pos Update
-	ball.Update(dt);
-
-	//ball.doContainReboundPhysical(walls, dt);
-	ball.doContainRebound(walls);
 
 	//test for Ball == RIP
 	if (ball.m_bottom > walls.m_bottom)
@@ -195,6 +194,10 @@ void Game::UpdateModel()
 		resetBall();
 		setupBricks1();
 	}
+
+	//ball.doContainReboundPhysical(walls, dt);
+	ball.doContainRebound(walls);
+
 
 	//win check
 	{
@@ -280,6 +283,6 @@ void Game::resetBall()
 	ball = Ball(Vec2(400.0f, 300.0f), Vec2(rand() % 201 - 200.0f,  50.0f + rand() % 51).Normalize() * speed);
 
 	//test code
-	ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-30.0f, -30.0f));
+	ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-300.0f, -300.0f));
 
 }
