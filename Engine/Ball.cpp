@@ -65,7 +65,7 @@ void Ball::doContainRebound(const Rect & walls)
 
 float Ball::doContainReboundPhysical(const Rect & walls, float dt)
 {	
-	constexpr float precision = 1000.0f;
+	constexpr float precision = 100.0f;
 	bool fixed = false;
 	float correction_output = 1.0f;
 

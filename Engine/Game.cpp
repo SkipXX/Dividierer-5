@@ -51,7 +51,6 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	float dt = timer.Mark();
-	ball.Update(dt);
 
 	//Options
 	//a is automatic movement
@@ -100,17 +99,18 @@ void Game::UpdateModel()
 	//Hiting a Brick
 	for (auto& ii : m_bricks)
 	{	
+		bool isHit = false;
 		if (ball.isOverlappingWith(ii) && !ii.isDead)
 		{	
 			if (ball.isSideRebound(ii)) ball.ReboundX();
 			else ball.ReboundY();
 
 			ii.isDead = true;
-
+			isHit = true;
 			ball.PadCooldown = false;
-
-			//respawn = true;
 		}
+		//Only bounce once
+		if (isHit) break;
 	}
 	
 
@@ -183,6 +183,8 @@ void Game::UpdateModel()
 		ball.PadCooldown = true;
 	}
 
+	//generic pos Update
+	ball.Update(dt);
 
 	//ball.doContainReboundPhysical(walls, dt);
 	ball.doContainRebound(walls);
@@ -278,6 +280,6 @@ void Game::resetBall()
 	ball = Ball(Vec2(400.0f, 300.0f), Vec2(rand() % 201 - 200.0f,  50.0f + rand() % 51).Normalize() * speed);
 
 	//test code
-	ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-300.0f, -300.0f));
+	ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-30.0f, -30.0f));
 
 }
