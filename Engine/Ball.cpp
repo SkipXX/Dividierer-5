@@ -166,3 +166,8 @@ bool Ball::isSideRebound(const Rect& rekt) const
 	//}
 	//else return false;
 }
+
+Vec2 Ball::GetPos() const
+{
+	return m_pos;
+}

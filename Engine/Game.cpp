@@ -22,6 +22,7 @@
 #include "Game.h"
 
 #include <iostream>
+#include <cassert>
 
 #include "drawLine.h"
 
@@ -44,6 +45,7 @@ void Game::Go()
 {
 	gfx.BeginFrame();	
 	float dt = timer.Mark() / float(Iterations);
+	assert(dt < 0.01f);
 	for (int ii = 0; ii < Iterations; ++ii)
 	{
 		UpdateModel(dt);
@@ -107,7 +109,16 @@ void Game::UpdateModel(float dt)
 		bool isHit = false;
 		if (ball.isOverlappingWith(ii) && !ii.isDead)
 		{	
-			if (ball.isSideRebound(ii)) ball.ReboundX();
+			if (ball.isSideRebound(ii))
+			{	
+
+				//CRUSH THE BRICK
+				if (abs(ball.m_v.x) > brickCrushFaktor * abs(ball.m_v.y))
+				{
+					ball.m_v.x *= brickCrushSpeedLoss;
+				}
+				else ball.ReboundX();
+			}
 			else ball.ReboundY();
 
 			ii.isDead = true;
@@ -225,6 +236,14 @@ void Game::UpdateModel(float dt)
 
 void Game::ComposeFrame()
 {
+	//BRICKCRUSH
+	if (abs(ball.m_v.x) > brickCrushFaktor * abs(ball.m_v.y))
+	{
+		int x = ball.GetPos().x + ball.m_radius;
+		int y = ball.GetPos().y + ball.m_radius;
+		gfx.DrawCircle(x, y, 9, Colors::Red);
+	}
+
 	//Ball
 	ball.Draw(gfx);
 

@@ -50,15 +50,19 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	const int Iterations = 10;
+
 	bool automaticMovement = false;
 	char optionsBuffer = '0';
-	int Iterations = 10;
+
 	int Lives = 3;
+
+	const float brickCrushFaktor = 5.0f;
+	const float brickCrushSpeedLoss = 0.5f;
 
 	Ball ball;
 	Rect walls = Rect(0.0f, float(gfx.ScreenWidth - 1), 0.0f, float(gfx.ScreenHeight - 1));
 	Pad pad;
-
 	std::vector<MyBrick> m_bricks;
 
 	FrameTimer timer;
