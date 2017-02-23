@@ -53,6 +53,7 @@ private:
 	bool automaticMovement = false;
 	char optionsBuffer = '0';
 	int Iterations = 10;
+	int Lives = 3;
 
 	Ball ball;
 	Rect walls = Rect(0.0f, float(gfx.ScreenWidth - 1), 0.0f, float(gfx.ScreenHeight - 1));

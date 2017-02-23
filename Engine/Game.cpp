@@ -192,7 +192,13 @@ void Game::UpdateModel(float dt)
 	if (ball.m_bottom > walls.m_bottom)
 	{
 		resetBall();
-		setupBricks1();
+		Lives--;
+
+		if (Lives == 0)
+		{
+			setupBricks1();
+			Lives = 3;
+		}
 	}
 
 	//ball.doContainReboundPhysical(walls, dt);
@@ -219,18 +225,53 @@ void Game::UpdateModel(float dt)
 
 void Game::ComposeFrame()
 {
+	//Ball
 	ball.Draw(gfx);
 
+	//Bricks
 	for (auto& ii : m_bricks)
 	{
 		if(!ii.isDead) ii.Draw(gfx);
 	}
 
+	//Pad
 	pad.Draw(gfx, Colors::Magenta);
 
-
+	//?
 	gfx.DrawLine(Vec2(pad.m_left + pad.m_width / 2, pad.m_top), Vec2(ball.m_left + 7, ball.m_top + 7));
 
+	//Lives
+	for (int ii = 0; ii < Lives; ii++)
+	{
+		int x = 20 + 7 * ii;
+		int y = gfx.ScreenHeight - 20;
+
+		gfx.PutPixel(x+0,y + 1, Colors::Red);
+		gfx.PutPixel(x+0,y + 2, Colors::Red);
+		gfx.PutPixel(x+1,y + 0, Colors::Red);
+		gfx.PutPixel(x+1,y + 1, Colors::Red);
+		gfx.PutPixel(x+1,y + 2, Colors::Red);
+		gfx.PutPixel(x+1,y + 3, Colors::Red);
+		gfx.PutPixel(x+2,y + 0, Colors::Red);
+		gfx.PutPixel(x+2,y + 1, Colors::Red);
+		gfx.PutPixel(x+2,y + 2, Colors::Red);
+		gfx.PutPixel(x+2,y + 3, Colors::Red);
+		gfx.PutPixel(x+2,y + 4, Colors::Red);
+		gfx.PutPixel(x+3,y + 2, Colors::Red);
+		gfx.PutPixel(x+3,y + 3, Colors::Red);
+		gfx.PutPixel(x+3,y + 4, Colors::Red);
+		gfx.PutPixel(x+4,y + 0, Colors::Red);
+		gfx.PutPixel(x+4,y + 1, Colors::Red);
+		gfx.PutPixel(x+4,y + 2, Colors::Red);
+		gfx.PutPixel(x+4,y + 3, Colors::Red);
+		gfx.PutPixel(x+4,y + 4, Colors::Red);
+		gfx.PutPixel(x+5,y + 0, Colors::Red);
+		gfx.PutPixel(x+5,y + 1, Colors::Red);
+		gfx.PutPixel(x+5,y + 2, Colors::Red);
+		gfx.PutPixel(x+5,y + 3, Colors::Red);
+		gfx.PutPixel(x+6,y + 1, Colors::Red);
+		gfx.PutPixel(x+6,y + 2, Colors::Red);
+	}
 }
 
 
@@ -283,6 +324,6 @@ void Game::resetBall()
 	ball = Ball(Vec2(400.0f, 300.0f), Vec2(rand() % 201 - 200.0f,  50.0f + rand() % 51).Normalize() * speed);
 
 	//test code
-	ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-300.0f, -300.0f));
+	//ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-300.0f, -300.0f));
 
 }
