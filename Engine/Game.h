@@ -46,6 +46,7 @@ private:
 	/*  User Functions              */
 	void setupBricks1();
 	void resetBall();
+	void inputHandling();
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -55,7 +56,9 @@ private:
 	const int Iterations = 10;
 
 	bool automaticMovement = false;
-	char optionsBuffer = '0';
+	bool m_music = true;
+	bool pause = false;
+	uint8_t inputBuffer = 0x0;
 
 	int Lives = 3;
 

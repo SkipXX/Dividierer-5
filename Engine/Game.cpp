@@ -47,12 +47,20 @@ Game::Game(MainWindow& wnd)
 void Game::Go()
 {
 	gfx.BeginFrame();	
+	///
+	inputHandling();
+
 	float dt = timer.Mark() / float(Iterations);
 	assert(dt < 0.01f);
-	for (int ii = 0; ii < Iterations; ++ii)
+
+	if (!pause)
 	{
-		UpdateModel(dt);
+		for (int ii = 0; ii < Iterations; ++ii)
+		{
+			UpdateModel(dt);
+		}
 	}
+	///
 	ComposeFrame();
 	gfx.EndFrame();
 }
@@ -64,29 +72,7 @@ void Game::UpdateModel(float dt)
 
 	//Options
 	//a is automatic movement
-	if (wnd.kbd.KeyIsPressed(0x41))
-	{
-		if(optionsBuffer == '0') optionsBuffer = 'a';
-	}
-	if (optionsBuffer != '0')
-	{
-		switch (optionsBuffer)
-		{
-		case 'a':
-			if (!wnd.kbd.KeyIsPressed(0x41))
-			{
-				automaticMovement = !automaticMovement;
-				optionsBuffer = '0';
-			}
-				break;
 
-		default:
-			throw("Unhandled case in optionsbuffer [UpdateModel()]"); //?! is this bad practice
-			optionsBuffer = '0';
-			break;
-		}
-
-	}
 
 	//random ball movement
 	//{
@@ -367,4 +353,82 @@ void Game::resetBall()
 	//test code
 	//ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-300.0f, -300.0f));
 
+}
+
+void Game::inputHandling()
+{
+	//Esc to exit ... NOT BUFFERED
+	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	{
+		exit(1337);
+	}
+
+	///Options
+	//pause funktion
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		inputBuffer |= 0x1;
+	}
+
+	//if RETURN is pressed (reset objects)
+	if (wnd.kbd.KeyIsPressed(VK_RETURN))
+	{
+		inputBuffer |= 0x2;
+	}
+
+	//A (automatic movement)
+	if (wnd.kbd.KeyIsPressed(0x41))
+	{
+		inputBuffer |= 0x4;
+	}
+
+	//M (music toggle)
+	if (wnd.kbd.KeyIsPressed(0x4D))
+	{
+		inputBuffer |= 0x8;
+	}
+
+	if (inputBuffer)
+	{
+		// 0x1 = 'SPACE'-Key ... pause funktion
+		if ((inputBuffer & 0x1) && !wnd.kbd.KeyIsPressed(VK_SPACE))
+		{
+			pause = !pause;
+			inputBuffer &= ~0x1;
+		}
+
+		// 0x2 = RETURN-Key ... RESET
+		if ((inputBuffer & 0x2) && !wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			Lives = 3;
+			resetBall();
+			setupBricks1();
+
+			inputBuffer &= ~0x2;
+		}
+
+		// 0x4 = 'a'-Key ... automatic movement ON/OFF
+		if ((inputBuffer & 0x4) && !wnd.kbd.KeyIsPressed(0x41))
+		{
+			automaticMovement = !automaticMovement;
+			inputBuffer &= ~0x4;
+		}
+
+		// 0x8 = 'M'-Key ... PLAY/STOP MUSIC
+		if ((inputBuffer & 0x8) && !wnd.kbd.KeyIsPressed(0x4D))
+		{
+			if (m_music)
+			{
+				Music.StopAll();
+				m_music = false;
+			}
+			else
+			{
+				Music.Play(1.0f,0.5f);
+				m_music = true;
+			}
+			inputBuffer &= ~0x8;
+		}
+	}
+	///
 }
