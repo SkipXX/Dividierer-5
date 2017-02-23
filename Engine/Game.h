@@ -57,7 +57,7 @@ private:
 
 	int Lives = 3;
 
-	const float brickCrushFaktor = 5.0f;
+	const float brickCrushFaktor = 2.0f;
 	const float brickCrushSpeedLoss = 0.5f;
 
 	Ball ball;

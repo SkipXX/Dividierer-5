@@ -38,6 +38,13 @@ Vec2& Vec2::operator-=( const Vec2& rhs )
 	return *this = *this - rhs;
 }
 
+//////
+Vec2 Vec2::operator-()
+{
+	return *this * -1.0f;
+}
+
+//////
 float Vec2::GetLength() const
 {
 	return std::sqrt( GetLengthSq() );

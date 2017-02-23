@@ -239,9 +239,28 @@ void Game::ComposeFrame()
 	//BRICKCRUSH
 	if (abs(ball.m_v.x) > brickCrushFaktor * abs(ball.m_v.y))
 	{
-		int x = ball.GetPos().x + ball.m_radius;
-		int y = ball.GetPos().y + ball.m_radius;
-		gfx.DrawCircle(x, y, 9, Colors::Red);
+		int x = int(ball.GetPos().x + ball.m_radius);
+		int y = int(ball.GetPos().y + ball.m_radius);
+		int rad = 10;
+		Color color = Colors::Red;
+
+		gfx.DrawCircle(x, y, rad, color);
+
+		Vec2 SchweifDir = -ball.m_v.GetNormalized();
+		int ScheifAnzahl = 5;
+		int MaxScheifLaenge = 30;
+		int MinScheifLaenge = 10;
+
+		for (int ii = 0; ii < ScheifAnzahl; ii++)
+		{
+			int x0 = x + int((rand() % rad - rad / 2) * 1.8f);
+			int y0 = y + int((rand() % rad - rad / 2) * 1.8f);
+
+			Vec2 p0 = Vec2(x0, y0);
+			Vec2 p1 = p0 + SchweifDir *float(10 + rand() % (MaxScheifLaenge - MinScheifLaenge + 1));
+
+			gfx.DrawLine(p0,p1,color);
+		}
 	}
 
 	//Ball
