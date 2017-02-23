@@ -28,32 +28,41 @@ void Ball::ReboundY()
 	m_v.y = -m_v.y;
 }
 
-//return side of wall as int, 1 = bottom
 void Ball::doContainRebound(const Rect & walls)
 {
 	if (m_left < walls.m_left)
 	{
 		move(Vec2(walls.m_left - m_left, 0.0f));
 		ReboundX();
+
+		PadCooldown = false;
 	}
 	else if (m_right > walls.m_right)
 	{
 		move(Vec2(walls.m_right - m_right, 0.0f));
 		ReboundX();
+
+		PadCooldown = false;
 	}
 
 	if (m_top < walls.m_top)
 	{
 		move(Vec2(0.0f, walls.m_top - m_top));
 		ReboundY();
+
+		PadCooldown = false;
 	}
 	else if (m_bottom > walls.m_bottom)
 	{
 		move(Vec2(0.0f, walls.m_bottom - m_bottom));
 		ReboundY();
+
+		PadCooldown = false;
 	}
 
+
 }
+
 float Ball::doContainReboundPhysical(const Rect & walls, float dt)
 {	
 	constexpr float precision = 1000.0f;
@@ -75,6 +84,7 @@ float Ball::doContainReboundPhysical(const Rect & walls, float dt)
 			}
 
 			ReboundX();
+			PadCooldown = false;
 
 			move(m_v * (dt * (precision - float(ii)) / precision));
 
@@ -93,6 +103,7 @@ float Ball::doContainReboundPhysical(const Rect & walls, float dt)
 			}
 
 			ReboundY();
+			PadCooldown = false;
 
 			move(m_v * (dt * (precision - float(ii)) / precision));
 

@@ -9,7 +9,7 @@ private:
 	Vec2 m_pos;
 public:
 	Vec2 m_v;
-
+	bool PadCooldown = false;
 public:
 	Ball() = default;
 	Ball(Vec2 pos, Vec2 v);

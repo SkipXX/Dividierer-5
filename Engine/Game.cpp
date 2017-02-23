@@ -29,12 +29,13 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	ball(Vec2(400.0f, 300.0f), Vec2(300.0f + rand() % 201, 400.0f + rand() % 201)),
+	ball(Vec2(400.0f, 300.0f), Vec2(-300.0f, -300.0f)),
 	pad(Vec2(gfx.ScreenWidth / 2, gfx.ScreenHeight - 50))
 {
 	timer.Mark();
 
 	resetBall();
+
 	setupBricks1();
 	//m_bricks.push_back(MyBrick(Vec2(160.0f,100.0f), 100,100,Colors::Green));
 }
@@ -88,7 +89,7 @@ void Game::UpdateModel()
 	//	ball.m_v -= Vec2(rand() % dd, rand() % dd);
 	//	if (ball.m_v.GetLength() > 4000) ball.m_v *= 0.9f;
 	//}
-
+	//
 	//Brick respawning for testing
 	//bool respawn = false;
 	//if (respawn)
@@ -105,6 +106,8 @@ void Game::UpdateModel()
 			else ball.ReboundY();
 
 			ii.isDead = true;
+
+			ball.PadCooldown = false;
 
 			//respawn = true;
 		}
@@ -153,7 +156,7 @@ void Game::UpdateModel()
 	}
 
 	//Pad rebound
-	if (ball.isOverlappingWith(pad))
+	if (!ball.PadCooldown && ball.isOverlappingWith(pad))
 	{
 		if (ball.isSideRebound(pad))
 		{	
@@ -176,7 +179,13 @@ void Game::UpdateModel()
 			ball.m_v += Vec2(((ball.m_left + 7.0f) - (pad.m_left + pad.m_width / 2.0f)) / (pad.m_width / 2.0f) * sideReboundFactor, 0.0f);
 			ball.m_v = ball.m_v.GetNormalized() * speed;
 		}
+
+		ball.PadCooldown = true;
 	}
+
+
+	//ball.doContainReboundPhysical(walls, dt);
+	ball.doContainRebound(walls);
 
 	//test for Ball == RIP
 	if (ball.m_bottom > walls.m_bottom)
@@ -184,9 +193,6 @@ void Game::UpdateModel()
 		resetBall();
 		setupBricks1();
 	}
-
-	//ball.doContainReboundPhysical(walls, dt);
-	ball.doContainRebound(walls);
 
 	//win check
 	{
@@ -270,4 +276,8 @@ void Game::resetBall()
 {
 	const float speed = 500.0f;
 	ball = Ball(Vec2(400.0f, 300.0f), Vec2(rand() % 201 - 200.0f,  50.0f + rand() % 51).Normalize() * speed);
+
+	//test code
+	ball = Ball(Vec2(400.0f - 10, 300.0f), Vec2(-300.0f, -300.0f));
+
 }
